@@ -38,7 +38,7 @@
 | 层级 | 状态 | 说明 |
 |------|------|------|
 | 1. PCI 枚举 | ✅ PASS(L4) | 10DE:1F0B 出现在系统信息 → PCI,Link Up |
-| 2. 设备名称显示 | ✅ 已配置 | `model` 注入;重启后显示状态见测试报告 |
+| 2. 设备名称显示 | ✅ **实机确认** | 系统信息 → PCI 显示 "NVIDIA CMP 40HX"(2026-10-31) |
 | 3. NVIDIA 内核驱动(NVRM 等) | ❌ NOT TESTED | 未安装;上游研究完成 |
 | 4. GSP 固件加载 | ❌ NOT TESTED | 依赖层 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依赖层 4 |
@@ -116,6 +116,17 @@
 4. 不含 OpenCL(上游栈无此组件)。
 5. 公开版不含任何序列号类身份数据——这是隐私剥离的结果,不是疏漏。
 
+### 实机状态速览（2026-11-01 更新，作者机器实测）
+
+| 项目 | 状态 | 等级 |
+|------|------|------|
+| macOS Tahoe 26.7.2 启动（P630 负责显示） | ✅ 正常进桌面 | L4 |
+| CMP 40HX PCI 枚举 | ✅ 10DE:1F0B · Rev A1 · Subsystem 1043:8804 · Link Up | L4 |
+| 设备名称显示 | ✅ 系统信息 → PCI 显示 "NVIDIA CMP 40HX" | L4 |
+| PCIe 链路 | ✅ Gen1 ×4（设备原生上限，实测） | L4 |
+| 核显图形加速 | ⚠️ 未生效（VESA，桌面约 20FPS）——修复方案待批准 | L4 现象已采集 |
+| NVIDIA 驱动 / GSP / Metal / 计算 | 未安装，NOT TESTED | — |
+
 ## 八、兼容性说明
 
 - **已验证可用**:Coffee Lake-S 平台 + Xeon + 核显显示 + CMP 40HX PCI 枚举(作者机器)。
@@ -138,7 +149,7 @@
 | L1 静态检查 | plist 解析 / ocvalidate 零错误 / 语义审计 12 项 | ✅ 全部通过 |
 | L2 自动化测试 | 工具自测 26 项(含故障注入) | ✅ 26/26 |
 | L3 外部硬件证据 | Windows PCI 路径双证据 / NVIDIA 官方支持表 | ✅ 已归档 |
-| L4 目标机实测 | 启动 ✅ / PCI 枚举 ✅ / 名称显示(重启后待确认)/ 驱动层 ❌ NOT TESTED / 音频 USB 睡眠 ❌ NOT TESTED | 部分 |
+| L4 目标机实测 | 启动 ✅ / PCI 枚举 ✅ / **名称显示 ✅** / 驱动层 · 音频 · USB · 睡眠 ❌ NOT TESTED | 部分 |
 
 **声明:L4 未完成项一律 NOT TESTED,不作为已解决宣称。**
 
@@ -272,7 +283,7 @@ Seven-layer status (layers must not be conflated):
 | Layer | Status |
 |-------|--------|
 | 1. PCI enumeration | ✅ PASS (L4) |
-| 2. Device name display | ✅ configured (`model` injection; post-reboot check in TEST-REPORT section) |
+| 2. Device name display | ✅ **confirmed on machine** | System Information → PCI shows "NVIDIA CMP 40HX" (2026-10-31) |
 | 3. NVIDIA kernel driver (NVRM etc.) | ❌ NOT TESTED — not installed |
 | 4. GSP firmware load | ❌ NOT TESTED |
 | 5. GPU init | ❌ NOT TESTED |
@@ -320,6 +331,17 @@ This is a “platform-specific template”, not a ready-to-boot EFI. Skipping an
 4. No OpenCL (upstream stack has no such component).
 5. The package contains no identity data by design.
 
+### Live Machine Status (updated 2026-11-01, measured on the author's machine)
+
+| Item | Status | Level |
+|------|--------|-------|
+| macOS Tahoe 26.7.2 boot (P630 display) | ✅ boots to desktop | L4 |
+| CMP 40HX PCI enumeration | ✅ 10DE:1F0B · Rev A1 · Subsystem 1043:8804 · Link Up | L4 |
+| Device name display | ✅ System Information → PCI shows "NVIDIA CMP 40HX" | L4 |
+| PCIe link | ✅ Gen1 ×4 (device-native maximum, measured) | L4 |
+| iGPU acceleration | ⚠️ not working (VESA, ~20 FPS) — fix pending approval | L4 symptom captured |
+| NVIDIA driver / GSP / Metal / compute | not installed, NOT TESTED | — |
+
 ### Compatibility
 
 Verified working: Coffee Lake-S + Xeon + iGPU display + CMP 40HX PCI enumeration (author's machine). Theoretically compatible: same-generation Coffee Lake desktops after item-by-item review. Not applicable: AMD platforms, laptops, older chipsets — untested.
@@ -340,7 +362,7 @@ Full records in the Bug Records section below.
 | L1 static | plist parse / ocvalidate zero errors / 12-item semantic audit | ✅ |
 | L2 automated | 26-item self-test incl. fault injection | ✅ 26/26 |
 | L3 external evidence | Windows PCI dual evidence / NVIDIA official table | ✅ archived |
-| L4 on-machine | boot ✅ / PCI enumeration ✅ / name display (post-reboot pending) / driver ❌ NOT TESTED / audio·USB·sleep ❌ NOT TESTED | partial |
+| L4 on-machine | boot ✅ / PCI enumeration ✅ / **name display ✅** / driver · audio · USB · sleep ❌ NOT TESTED | partial |
 
 **Statement: unfinished L4 items are NOT TESTED and are never claimed as solved.**
 
@@ -448,7 +470,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | 層級 | 狀態 | 說明 |
 |------|------|------|
 | 1. PCI 列舉 | ✅ PASS（L4） | 10DE:1F0B 出現在系統資訊 → PCI，Link Up |
-| 2. 裝置名稱顯示 | ✅ 已設定 | `model` 注入；重開機後顯示狀態見測試報告 |
+| 2. 裝置名稱顯示 | ✅ **實機確認** | 系統資訊 → PCI 顯示 "NVIDIA CMP 40HX"（2026-10-31） |
 | 3. NVIDIA 核心驅動（NVRM 等） | ❌ NOT TESTED | 未安裝；上游研究完成 |
 | 4. GSP 韌體載入 | ❌ NOT TESTED | 依賴層 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依賴層 4 |
@@ -526,6 +548,17 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 4. 不含 OpenCL（上游堆疊無此元件）。
 5. 公開版不含任何序號類身分資料——這是隱私移除的結果，不是疏漏。
 
+### 實機狀態速覽（2026-11-01 更新，作者機器實測）
+
+| 項目 | 狀態 | 等級 |
+|------|------|------|
+| macOS Tahoe 26.7.2 啟動（P630 負責顯示） | ✅ 正常進桌面 | L4 |
+| CMP 40HX PCI 列舉 | ✅ 10DE:1F0B · Rev A1 · Subsystem 1043:8804 · Link Up | L4 |
+| 裝置名稱顯示 | ✅ 系統資訊 → PCI 顯示 "NVIDIA CMP 40HX" | L4 |
+| PCIe 連結 | ✅ Gen1 ×4（裝置原生上限，實測） | L4 |
+| 內顯圖形加速 | ⚠️ 未生效（VESA，桌面約 20FPS）——修復方案待批准 | L4 現象已採集 |
+| NVIDIA 驅動／GSP／Metal／運算 | 未安裝，NOT TESTED | — |
+
 ### 相容性說明
 
 - **已驗證可用**：Coffee Lake-S 平台 + Xeon + 內顯顯示 + CMP 40HX PCI 列舉（作者機器）。
@@ -548,7 +581,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | L1 靜態檢查 | plist 解析／ocvalidate 零錯誤／語義稽核 12 項 | ✅ 全部通過 |
 | L2 自動化測試 | 工具自測 26 項（含故障注入） | ✅ 26/26 |
 | L3 外部硬體證據 | Windows PCI 路徑雙證據／NVIDIA 官方支援表 | ✅ 已歸檔 |
-| L4 目標機實測 | 啟動 ✅／PCI 列舉 ✅／名稱顯示（重開機後待確認）／驅動層 ❌ NOT TESTED／音效 USB 睡眠 ❌ NOT TESTED | 部分 |
+| L4 目標機實測 | 啟動 ✅／PCI 列舉 ✅／**名稱顯示 ✅**／驅動層 · 音效 · USB · 睡眠 ❌ NOT TESTED | 部分 |
 
 **聲明：L4 未完成項一律 NOT TESTED，不作為已解決宣稱。**
 
