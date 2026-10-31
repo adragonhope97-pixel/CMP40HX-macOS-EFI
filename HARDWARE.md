@@ -13,7 +13,7 @@
 | 主板 | ASUS ROG STRIX Z370-F GAMING | 用户声明 + 目标机器 EFI 实测环境 |
 | CPU | Intel Xeon E-2124G(Coffee Lake-S,4 核) | 用户声明 + EFI 实测环境 |
 | NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1`(均为目标机器系统报告实测) | macOS 系统报告(System Information → PCI)实测 |
-| 内存 | **BLOCKED** — 未提供实测证据(品牌/型号待补) | 暂无 |
+| 内存 | 2 × 8GB DDR4-2666,PartNumber `HKED4081CAA1D0HA1`(品牌字段为未解码原始码 `0B2C`,故按 PartNumber 公布) | Windows CIM 实测(Win32_PhysicalMemory) |
 | Wi-Fi | 无 WLAN 硬件(实测 Get-NetAdapter / netsh wlan 均无适配器) | Windows 实测 |
 
 ### CMP 40HX 补充说明
