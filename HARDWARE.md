@@ -14,12 +14,13 @@
 | CPU | Intel Xeon E-2124G(Coffee Lake-S,4 核) | 用户声明 + EFI 实测环境 |
 | NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1`(均为目标机器系统报告实测) | macOS 系统报告(System Information → PCI)实测 |
 | 内存 | **BLOCKED** — 未提供实测证据(品牌/型号待补) | 暂无 |
-| Wi-Fi | **BLOCKED** — 未提供实测证据(品牌/芯片/型号待补) | 暂无 |
+| Wi-Fi | 无 WLAN 硬件(实测 Get-NetAdapter / netsh wlan 均无适配器) | Windows 实测 |
 
 ### CMP 40HX 补充说明
 
-- Subsystem ID:存在两种互相不一致的历史记录值,**均未在目标机器复核**,本页不公布任何候选值。
+- Subsystem ID:**`0x8804`(Vendor 1043)** —— Windows PnP(`SUBSYS_88041043`)与 nvidia-smi(`Sub System Id 0x88041043`)双源实测一致;历史记录中的另一值经复核作废。
 - PCIe 链路:实测 Link Up(速率/宽度以实机采集为准)。
+- PCIe 链路:Gen1 ×4(设备原生上限,实测 Current=Max 有效带宽档);VBIOS 90.06.67.00.04;BAR1 64 MiB。
 - 本卡无显示输出接口,定位为计算设备;显示由平台核显负责。
 
 ### 隐私边界
@@ -34,14 +35,15 @@
 |----------|-------|----------|
 | Motherboard | ASUS ROG STRIX Z370-F GAMING | Author statement + verified EFI environment on the target machine |
 | CPU | Intel Xeon E-2124G (Coffee Lake-S, 4 cores) | Author statement + verified EFI environment |
-| NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1` (all read from the target machine's system report) | macOS System Information → PCI (measured) |
-| Memory | **BLOCKED** — no measurement evidence provided yet (brand/model pending) | — |
-| Wi-Fi | **BLOCKED** — no measurement evidence provided yet (brand/chip/model pending) | — |
+| NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1` / **Subsystem `1043:8804`** | macOS System Information → PCI + Windows PnP + nvidia-smi (triple-source consistent) |
+| Memory | 2 × 8GB DDR4-2666, PartNumber `HKED4081CAA1D0HA1` (brand field is an undecoded raw code `0B2C`; published by PartNumber) | Windows CIM (Win32_PhysicalMemory) |
+| Wi-Fi | No WLAN hardware present (Get-NetAdapter / netsh wlan both return none) | Windows measurement |
 
 ### CMP 40HX Notes
 
-- Subsystem ID: two mutually inconsistent historical record values exist; **not yet re-verified on the target machine**, so no candidate value is published here.
-- PCIe link: measured Link Up (speed/width per on-machine capture).
+- Subsystem ID: **`0x8804` (Vendor 1043)** — confirmed by dual sources on the target machine (Windows PnP + nvidia-smi); the other historical value is invalidated.
+- PCIe link: Gen1 ×4 is the device-native maximum (measured); VBIOS 90.06.67.00.04; BAR1 64 MiB.
+- The card has no display outputs; it is a compute device.
 - The card has no display outputs; it is a compute device. Display is handled by the platform iGPU.
 
 ### Privacy Boundary
@@ -56,14 +58,15 @@ The following never appear in this repository: serial numbers, MAC addresses, ne
 |------|------|----------|
 | 主機板 | ASUS ROG STRIX Z370-F GAMING | 使用者聲明 + 目標機器 EFI 實測環境 |
 | CPU | Intel Xeon E-2124G（Coffee Lake-S，4 核心） | 使用者聲明 + EFI 實測環境 |
-| NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1`（皆為目標機器系統報告實測） | macOS 系統資訊 → PCI 實測 |
-| 記憶體 | **BLOCKED** — 尚未提供實測證據（品牌／型號待補） | 暫無 |
-| Wi-Fi | **BLOCKED** — 尚未提供實測證據（品牌／晶片／型號待補） | 暫無 |
+| NVIDIA GPU | NVIDIA CMP 40HX — Vendor `0x10DE` / Device `0x1F0B` / Revision `0x00A1` / **Subsystem `1043:8804`** | macOS 系統資訊 → PCI + Windows PnP + nvidia-smi 三源一致 |
+| 記憶體 | 2 × 8GB DDR4-2666，PartNumber `HKED4081CAA1D0HA1`（品牌欄位為未解碼原始碼 `0B2C`，故按 PartNumber 公布） | Windows CIM 實測（Win32_PhysicalMemory） |
+| Wi-Fi | 無 WLAN 硬體（實測 Get-NetAdapter／netsh wlan 均無适配器） | Windows 實測 |
 
 ### CMP 40HX 補充說明
 
-- Subsystem ID：存在兩種互相不一致的歷史記錄值，**均未於目標機器複核**，本頁不公布任何候選值。
-- PCIe 連結：實測 Link Up（速率／寬度以實機採集為準）。
+- Subsystem ID：**`0x8804`（Vendor 1043）** —— Windows PnP 與 nvidia-smi 雙源實測一致；歷史記錄中的另一值經複核作廢。
+- PCIe 連結：Gen1 ×4 為裝置原生上限（實測）；VBIOS 90.06.67.00.04；BAR1 64 MiB。
+- 本卡無顯示輸出介面，定位為運算裝置。
 - 本卡無顯示輸出介面，定位為運算裝置；顯示由平台內顯負責。
 
 ### 隱私邊界
