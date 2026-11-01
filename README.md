@@ -42,7 +42,7 @@
 | 3. NVIDIA 内核驱动(NVRM 等) | ❌ NOT TESTED | 未安装;上游研究完成 |
 | 4. GSP 固件加载 | ❌ NOT TESTED | 依赖层 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依赖层 4 |
-| 6. Metal / Vulkan 计算 | ❌ NOT TESTED | 依赖层 5;OpenCL 上游不提供 |
+| 6. Metal / Vulkan / OpenCL 计算 | ❌ NOT TESTED | 依赖层 5;OpenCL 在上游功能范围内,CMP 40HX 支持程度取决于驱动实现与设备初始化结果 |
 | 7. 显示输出 | — | 本卡无显示接口;显示由核显负责 |
 
 ### 4.2 设备匹配链(源码级结论)
@@ -113,7 +113,7 @@
 1. 本包以"作者机器(Coffee Lake-S + Xeon + Z370-F)"为参照;其他平台逐项评估,不可照搬。
 2. `model` 注入路径必须按你自己的 IORegistry 复核。
 3. 本包**不提供** NVIDIA 驱动;NullMoth 为独立第三方项目,其许可(PolyForm Noncommercial)与系统要求自行评估。
-4. 不含 OpenCL(上游栈无此组件)。
+4. OpenCL 在 NullMoth 功能范围内,但 CMP 40HX 上尚未实测;支持程度取决于驱动初始化结果。
 5. 公开版不含任何序列号类身份数据——这是隐私剥离的结果,不是疏漏。
 
 ### 实机状态速览（2026-11-01 更新，作者机器实测）
@@ -196,9 +196,9 @@
 | 4 | 保留 CMP `model` 注入 | 项目核心内容,无隐私 |
 | 5 | 路径 = Windows 双证据推导 + 实机复核流程 | ACPI 节点名不单独证明 _ADR |
 | 6 | 匹配研究:回退门禁放行,不改任何身份 | 白名单不含 CMP 但回退 ≥0x1E00 接受;NVIDIA 官方表含 1F0B |
-| 7 | Subsystem 值不公布 | 两种历史记录不一致且未实测 |
+| 7 | Subsystem ID 已定案:1043:8804(Windows PnP + nvidia-smi + macOS IORegistry 三源一致);历史值 0x8B04 标记为错误记录,不再沿用 | 已定案(2026-11-01) |
 | 8 | 无头计算写入路线图 | 上游 headlessCheck 源码确认;前置 = Intel IOFramebuffer 存在 |
-| 9 | OpenCL 排除 | 上游无组件 |
+| 9 | OpenCL:上游功能范围包含,CMP 40HX 未实测——状态 NOT TESTED | 依据上游 README 修正(2026-11-01) |
 | 10 | 内存/Wi-Fi 不填写 | 无实测证据,禁止猜测 |
 
 ## 十四、隐私清理明细
@@ -223,8 +223,8 @@
 | BUG-P630-001 | 高 | 核显加速未生效(桌面约 20FPS) | boot-args 强制 VESA;与上游无头分支存在交叉依赖 | 移除该参数(需前置确认) | OPEN |
 | BUG-CMP-001 | 信息 | 1F0B 不在提取表 | 提取口径排除 CMP | 无需修复(回退放行) | WONTFIX |
 | BUG-CMP-002 | 高 | 无头计算未实测 | 驱动未安装 | 阶段计划 | NOT TESTED |
-| BUG-CMP-004 | 低 | Subsystem 两种历史值 | 记录不一致 | 实机复核 | OPEN |
-| BUG-CMP-005 | 信息 | OpenCL 不可用 | 上游无组件 | 不适用 | WONTFIX |
+| BUG-CMP-004 | 低 | Subsystem 两种历史值(8B04/8804) | 记录不一致 | 双侧实测定案 0x8804 | — | RESOLVED |
+| BUG-CMP-005 | 中 | OpenCL 支持未验证(上游功能范围包含) | 设备初始化未完成 | 阶段 B4 验证 | — | NOT TESTED |
 
 ## 十六、参考资料
 
@@ -287,7 +287,7 @@ Seven-layer status (layers must not be conflated):
 | 3. NVIDIA kernel driver (NVRM etc.) | ❌ NOT TESTED — not installed |
 | 4. GSP firmware load | ❌ NOT TESTED |
 | 5. GPU init | ❌ NOT TESTED |
-| 6. Metal / Vulkan compute | ❌ NOT TESTED (OpenCL: not provided upstream) |
+| 6. Metal / Vulkan / OpenCL compute | ❌ NOT TESTED — OpenCL is in the upstream feature scope; actual support depends on driver implementation and device init results |
 | 7. Display output | — (card has no outputs; iGPU handles display) |
 
 Device matching chain (source-level): IOKit probe matches vendor `0x10DE` + class `0x03` → hit; the installer whitelist (247 IDs) excludes CMP SKUs; the fallback gate (`≥0x1E00`) accepts this card; NVIDIA's official supported-chips table lists “NVIDIA CMP 40HX 1F0B”. **No identity spoofing is required anywhere.**
@@ -328,7 +328,7 @@ This is a “platform-specific template”, not a ready-to-boot EFI. Skipping an
 1. Authored against Coffee Lake-S + Xeon + Z370-F; evaluate other platforms item by item.
 2. Re-verify the injection path on your own hardware.
 3. No NVIDIA driver is bundled; NullMoth is a separate third-party project (PolyForm Noncommercial license — evaluate yourself).
-4. No OpenCL (upstream stack has no such component).
+4. OpenCL is listed in the NullMoth feature scope but is unverified on the CMP 40HX; actual support depends on driver init results.
 5. The package contains no identity data by design.
 
 ### Live Machine Status (updated 2026-11-01, measured on the author's machine)
@@ -395,9 +395,9 @@ Full records in the Bug Records section below.
 | 4 | Keep the CMP `model` injection | core adaptation content, no privacy |
 | 5 | Path = Windows dual evidence + on-machine re-verification | ACPI node name alone does not prove `_ADR` |
 | 6 | Matching research: fallback gate admits 1F0B; no identity edits | whitelist lacks CMP but NVIDIA official table includes it |
-| 7 | Subsystem value not published | two inconsistent historical values, unverified |
+| 7 | Subsystem ID resolved: 1043:8804 (Windows PnP + nvidia-smi + macOS IORegistry, triple-source); historical value 0x8B04 marked as an error record | resolved (2026-11-01) |
 | 8 | Headless compute on the roadmap | upstream headlessCheck confirmed; prerequisite = Intel IOFramebuffer present |
-| 9 | OpenCL excluded | no upstream component |
+| 9 | OpenCL: included in the upstream feature scope, unverified on the CMP 40HX — status NOT TESTED | corrected per upstream README (2026-11-01) |
 | 10 | Memory/Wi-Fi left blank | no measurement evidence; guessing forbidden |
 
 ### Privacy Cleaning Details
@@ -422,8 +422,8 @@ Full records in the Bug Records section below.
 | BUG-P630-001 | high | iGPU acceleration not working (~20 FPS) | boot-args force VESA; interplay with upstream headless path | remove flag (precondition first) | OPEN |
 | BUG-CMP-001 | info | 1F0B not in extraction table | extraction excludes CMP SKUs | none needed (fallback admits) | WONTFIX |
 | BUG-CMP-002 | high | headless compute untested | driver not installed | staged plan | NOT TESTED |
-| BUG-CMP-004 | low | two historical Subsystem values | record inconsistency | on-machine re-check | OPEN |
-| BUG-CMP-005 | info | OpenCL unavailable | no upstream component | n/a | WONTFIX |
+| BUG-CMP-004 | low | two historical Subsystem values (8B04/8804) | record inconsistency | resolved to 0x8804 by dual-side measurement | — | RESOLVED |
+| BUG-CMP-005 | med | OpenCL support unverified (listed in upstream scope) | device init not completed | stage B4 validation | — | NOT TESTED |
 
 ### References
 
@@ -474,7 +474,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | 3. NVIDIA 核心驅動（NVRM 等） | ❌ NOT TESTED | 未安裝；上游研究完成 |
 | 4. GSP 韌體載入 | ❌ NOT TESTED | 依賴層 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依賴層 4 |
-| 6. Metal／Vulkan 運算 | ❌ NOT TESTED | 依賴層 5；OpenCL 上游不提供 |
+| 6. Metal／Vulkan／OpenCL 運算 | ❌ NOT TESTED | 依賴層 5；OpenCL 在上游功能範圍內，CMP 40HX 支援程度取決於驅動實作與裝置初始化結果 |
 | 7. 顯示輸出 | — | 本卡無顯示介面；顯示由內顯負責 |
 
 #### 裝置匹配鏈（原始碼級結論）
@@ -545,7 +545,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 1. 本包以「作者機器（Coffee Lake-S + Xeon + Z370-F）」為參照；其他平台逐項評估，不可照搬。
 2. `model` 注入路徑必須按你自己的 IORegistry 複核。
 3. 本包**不提供** NVIDIA 驅動；NullMoth 為獨立第三方專案，其授權（PolyForm Noncommercial）與系統要求自行評估。
-4. 不含 OpenCL（上游堆疊無此元件）。
+4. OpenCL 在 NullMoth 功能範圍內，但 CMP 40HX 上尚未實測；支援程度取決於驅動初始化結果。
 5. 公開版不含任何序號類身分資料——這是隱私移除的結果，不是疏漏。
 
 ### 實機狀態速覽（2026-11-01 更新，作者機器實測）
@@ -614,9 +614,9 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | 4 | 保留 CMP `model` 注入 | 專案核心內容，無隱私 |
 | 5 | 路徑 = Windows 雙證據推導 + 實機複核流程 | ACPI 節點名不單獨證明 _ADR |
 | 6 | 匹配研究：回退門檻放行，不改任何身分 | 白名單不含 CMP 但回退 ≥0x1E00 接受；NVIDIA 官方表含 1F0B |
-| 7 | Subsystem 值不公布 | 兩種歷史記錄不一致且未實測 |
+| 7 | Subsystem ID 已定案：1043:8804（Windows PnP + nvidia-smi + macOS IORegistry 三源一致）；歷史值 0x8B04 標記為錯誤記錄，不再沿用 | 已定案（2026-11-01） |
 | 8 | 無頭運算寫入路線圖 | 上游 headlessCheck 原始碼確認；前置 = Intel IOFramebuffer 存在 |
-| 9 | OpenCL 排除 | 上游無元件 |
+| 9 | OpenCL：上游功能範圍包含，CMP 40HX 未實測——狀態 NOT TESTED | 依據上游 README 修正（2026-11-01） |
 | 10 | 記憶體／Wi-Fi 不填寫 | 無實測證據，禁止猜測 |
 
 ### 隱私清理明細
@@ -641,8 +641,8 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | BUG-P630-001 | 高 | 內顯加速未生效（桌面約 20FPS） | boot-args 強制 VESA；與上游無頭分支存在交叉依賴 | 移除該參數（需前置確認） | OPEN |
 | BUG-CMP-001 | 資訊 | 1F0B 不在提取表 | 提取口徑排除 CMP | 無需修復（回退放行） | WONTFIX |
 | BUG-CMP-002 | 高 | 無頭運算未實測 | 驅動未安裝 | 階段計畫 | NOT TESTED |
-| BUG-CMP-004 | 低 | Subsystem 兩種歷史值 | 記錄不一致 | 實機複核 | OPEN |
-| BUG-CMP-005 | 資訊 | OpenCL 不可用 | 上游無元件 | 不適用 | WONTFIX |
+| BUG-CMP-004 | 低 | Subsystem 兩種歷史值（8B04/8804） | 記錄不一致 | 雙側實測定案 0x8804 | — | RESOLVED |
+| BUG-CMP-005 | 中 | OpenCL 支援未驗證（上游功能範圍包含） | 裝置初始化未完成 | 階段 B4 驗證 | — | NOT TESTED |
 
 ### 參考資料
 

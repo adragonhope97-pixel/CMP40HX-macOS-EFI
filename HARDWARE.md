@@ -18,7 +18,7 @@
 
 ### CMP 40HX 补充说明
 
-- Subsystem ID:**`0x8804`(Vendor 1043)** —— Windows PnP(`SUBSYS_88041043`)与 nvidia-smi(`Sub System Id 0x88041043`)双源实测一致;历史记录中的另一值经复核作废。
+- Subsystem ID:**`0x8804`(Vendor 1043)** —— Windows PnP、nvidia-smi 与 macOS IORegistry 三侧实测一致;历史记录值 `0x8B04` 确认为错误记录,不再沿用。
 - PCIe 链路:实测 Link Up(速率/宽度以实机采集为准)。
 - PCIe 链路:Gen1 ×4(设备原生上限,实测 Current=Max 有效带宽档);VBIOS 90.06.67.00.04;BAR1 64 MiB。
 - 本卡无显示输出接口,定位为计算设备;显示由平台核显负责。
@@ -41,7 +41,7 @@
 
 ### CMP 40HX Notes
 
-- Subsystem ID: **`0x8804` (Vendor 1043)** — confirmed by dual sources on the target machine (Windows PnP + nvidia-smi); the other historical value is invalidated.
+- Subsystem ID: **`0x8804` (Vendor 1043)** — confirmed on Windows PnP, nvidia-smi and macOS IORegistry; the historical value `0x8B04` is confirmed to be an erroneous record and is retired.
 - PCIe link: Gen1 ×4 is the device-native maximum (measured); VBIOS 90.06.67.00.04; BAR1 64 MiB.
 - The card has no display outputs; it is a compute device.
 - The card has no display outputs; it is a compute device. Display is handled by the platform iGPU.
@@ -64,7 +64,7 @@ The following never appear in this repository: serial numbers, MAC addresses, ne
 
 ### CMP 40HX 補充說明
 
-- Subsystem ID：**`0x8804`（Vendor 1043）** —— Windows PnP 與 nvidia-smi 雙源實測一致；歷史記錄中的另一值經複核作廢。
+- Subsystem ID：**`0x8804`（Vendor 1043）** —— Windows PnP、nvidia-smi 與 macOS IORegistry 三側實測一致；歷史記錄值 `0x8B04` 確認為錯誤記錄，不再沿用。
 - PCIe 連結：Gen1 ×4 為裝置原生上限（實測）；VBIOS 90.06.67.00.04；BAR1 64 MiB。
 - 本卡無顯示輸出介面，定位為運算裝置。
 - 本卡無顯示輸出介面，定位為運算裝置；顯示由平台內顯負責。
