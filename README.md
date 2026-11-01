@@ -39,7 +39,7 @@
 |------|------|------|
 | 1. PCI 枚举 | ✅ PASS(L4) | 10DE:1F0B 出现在系统信息 → PCI,Link Up |
 | 2. 设备名称显示 | ✅ **实机确认** | 系统信息 → PCI 显示 "NVIDIA CMP 40HX"(2026-10-31) |
-| 3. NVIDIA 内核驱动(NVRM 等) | ❌ NOT TESTED | 未安装;上游研究完成 |
+| 3. NVIDIA 内核驱动(NVRM 等) | ✅ **已安装并加载** | NullMoth 2.6.5 四组件 kmutil 实测(2026-11-01) |
 | 4. GSP 固件加载 | ❌ NOT TESTED | 依赖层 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依赖层 4 |
 | 6. Metal / Vulkan / OpenCL 计算 | ❌ NOT TESTED | 依赖层 5;OpenCL 在上游功能范围内,CMP 40HX 支持程度取决于驱动实现与设备初始化结果 |
@@ -125,7 +125,11 @@
 | 设备名称显示 | ✅ 系统信息 → PCI 显示 "NVIDIA CMP 40HX" | L4 |
 | PCIe 链路 | ✅ Gen1 ×4（设备原生上限，实测） | L4 |
 | 核显图形加速 | ⚠️ 未生效（VESA，桌面约 20FPS）——修复方案待批准 | L4 现象已采集 |
-| NVIDIA 驱动 / GSP / Metal / 计算 | 未安装，NOT TESTED | — |
+| NullMoth 驱动安装(官方 2.6.5 包) | ✅ install.sh 全流程成功(预检/完整性/备份/安装) | L4 |
+| 驱动加载(NVRM/NVAccel/NVRMFB/NVRMAGDC) | ✅ 四组件全部加载(kmutil 实测) | L4 |
+| NVIDIA 出现在显示设备枚举 | ✅ 系统信息显示 CMP 40HX | L4 |
+| GSP 加载 / GPU 初始化 | ⏳ 下轮取证 | — |
+| Metal 枚举 / 计算 | NOT TESTED | — |
 
 ## 八、兼容性说明
 
@@ -167,6 +171,9 @@
 | 8 显示诊断 | 诊断脚本与取证方案 | 根因指向显示参数,待实机闭环 |
 | 9 隐私清理 | 逐文件剥离 + 全树扫描 | 本公开版 |
 | 10 发布 | GitHub 新仓库 + Release | 本仓库 |
+| 11 NullMoth 源码研究 | HEAD 门禁/无头路径/兼容链全解 | Docs/research/02 |
+| 12 EFI 迭代 | Exp-N1 变体部署(NullMoth 要求全集) | Docs/research/04 |
+| 13 驱动安装与加载验证 | install.sh 成功 + 四组件加载 | Docs/INSTALL-LOG.md |
 
 ## 十二、开发规则(15 条,全程遵守)
 
@@ -284,7 +291,7 @@ Seven-layer status (layers must not be conflated):
 |-------|--------|
 | 1. PCI enumeration | ✅ PASS (L4) |
 | 2. Device name display | ✅ **confirmed on machine** | System Information → PCI shows "NVIDIA CMP 40HX" (2026-10-31) |
-| 3. NVIDIA kernel driver (NVRM etc.) | ❌ NOT TESTED — not installed |
+| 3. NVIDIA kernel driver (NVRM etc.) | ✅ **installed & loaded** | NullMoth 2.6.5, four components via kmutil (2026-11-01) |
 | 4. GSP firmware load | ❌ NOT TESTED |
 | 5. GPU init | ❌ NOT TESTED |
 | 6. Metal / Vulkan / OpenCL compute | ❌ NOT TESTED — OpenCL is in the upstream feature scope; actual support depends on driver implementation and device init results |
@@ -340,7 +347,11 @@ This is a “platform-specific template”, not a ready-to-boot EFI. Skipping an
 | Device name display | ✅ System Information → PCI shows "NVIDIA CMP 40HX" | L4 |
 | PCIe link | ✅ Gen1 ×4 (device-native maximum, measured) | L4 |
 | iGPU acceleration | ⚠️ not working (VESA, ~20 FPS) — fix pending approval | L4 symptom captured |
-| NVIDIA driver / GSP / Metal / compute | not installed, NOT TESTED | — |
+| NullMoth driver install (official 2.6.5 package) | ✅ install.sh full flow succeeded (preflight/integrity/backup/install) | L4 |
+| Driver load (NVRM/NVAccel/NVRMFB/NVRMAGDC) | ✅ all four components loaded (kmutil) | L4 |
+| NVIDIA in display enumeration | ✅ System Information shows CMP 40HX | L4 |
+| GSP load / GPU init | ⏳ next evidence round | — |
+| Metal enumeration / compute | NOT TESTED | — |
 
 ### Compatibility
 
@@ -429,6 +440,10 @@ Full records in the Bug Records section below.
 
 OpenCorePkg (1.0.8) — acidanthera; OpenCore Configuration.pdf; Dortania Install Guide / Coffee Lake guide; NullMoth NVIDIA macOS Driver (2.6.5) incl. CARD-SUPPORT / HOW-IT-WORKS / CHANGELOG / Releases; NVIDIA Open GPU Kernel Modules; NVIDIA supportedchips (570.153.02) — lists “NVIDIA CMP 40HX 1F0B”; 1401 project; pci.ids. Third-party kext upstreams and licenses: NOTICE.
 
+### Research Documents
+
+Docs/research/01 Windows hardware forensics · 02 NullMoth source audit · 03 CMP 40HX adaptation analysis · 04 Metal implementation plan · 09 EFI provenance audit · 10 Picker audit; Docs/BUG-DETECTION-MATRIX.md · BUG-FIX-LOG.md · INSTALL-LOG.md
+
 ### License
 
 Project files: MIT (LICENSE). Bundled kext binaries belong to their upstream authors, licenses listed in NOTICE. **Do not** redistribute after removing license/attribution notices.
@@ -471,7 +486,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 |------|------|------|
 | 1. PCI 列舉 | ✅ PASS（L4） | 10DE:1F0B 出現在系統資訊 → PCI，Link Up |
 | 2. 裝置名稱顯示 | ✅ **實機確認** | 系統資訊 → PCI 顯示 "NVIDIA CMP 40HX"（2026-10-31） |
-| 3. NVIDIA 核心驅動（NVRM 等） | ❌ NOT TESTED | 未安裝；上游研究完成 |
+| 3. NVIDIA 核心驅動（NVRM 等） | ✅ **已安裝並載入** | NullMoth 2.6.5 四元件 kmutil 實測（2026-11-01） |
 | 4. GSP 韌體載入 | ❌ NOT TESTED | 依賴層 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依賴層 4 |
 | 6. Metal／Vulkan／OpenCL 運算 | ❌ NOT TESTED | 依賴層 5；OpenCL 在上游功能範圍內，CMP 40HX 支援程度取決於驅動實作與裝置初始化結果 |
@@ -557,7 +572,11 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | 裝置名稱顯示 | ✅ 系統資訊 → PCI 顯示 "NVIDIA CMP 40HX" | L4 |
 | PCIe 連結 | ✅ Gen1 ×4（裝置原生上限，實測） | L4 |
 | 內顯圖形加速 | ⚠️ 未生效（VESA，桌面約 20FPS）——修復方案待批准 | L4 現象已採集 |
-| NVIDIA 驅動／GSP／Metal／運算 | 未安裝，NOT TESTED | — |
+| NullMoth 驅動安裝（官方 2.6.5 包） | ✅ install.sh 全流程成功（預檢／完整性／備份／安裝） | L4 |
+| 驅動載入（NVRM／NVAccel／NVRMFB／NVRMAGDC） | ✅ 四元件全部載入（kmutil 實測） | L4 |
+| NVIDIA 出現在顯示裝置列舉 | ✅ 系統資訊顯示 CMP 40HX | L4 |
+| GSP 載入／GPU 初始化 | ⏳ 下輪取證 | — |
+| Metal 列舉／運算 | NOT TESTED | — |
 
 ### 相容性說明
 
@@ -659,6 +678,10 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | pci.ids | https://pci-ids.ucw.cz/ | 10DE:1F0B = TU106 [CMP 40HX] |
 
 第三方 kext 上游與授權：見 [NOTICE](NOTICE)。
+
+### 深度研究文件
+
+Docs/research/01 Windows 硬體取證 · 02 NullMoth 原始碼稽核 · 03 CMP 40HX 適配分析 · 04 Metal 實施計畫 · 09 EFI 來源溯源 · 10 Picker 稽核；Docs/BUG-DETECTION-MATRIX.md · BUG-FIX-LOG.md · INSTALL-LOG.md
 
 ### 授權條款
 
