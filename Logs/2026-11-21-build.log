@@ -1,0 +1,158 @@
+===== CMP40HX SKELETON BUILD 20261121-075455 =====
+macOS: 26.7.2 (25G332)
+目录: /Users/<user>/Desktop/CMP40HX-Metal-Skeleton
+
+--- [1] 工具链检查 ---
+Xcode CLT: /Library/Developer/CommandLineTools
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+Target: x86_64-apple-darwin25.6.0
+SDK: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+
+--- [2] 编译 ---
+== CMP40HX skeleton build ==
+SDK: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+-- compile --
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:412:18: warning: 'handleOpen' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+  412 |     virtual bool handleOpen(IOService * forClient, IOOptionBits options, void * arg);
+      |                  ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IOService.h:660:15: note: overridden virtual function is here
+  660 |         virtual bool handleOpen(    IOService *   forClient,
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:413:18: warning: 'handleClose' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+  413 |     virtual void handleClose(IOService * forClient, IOOptionBits options);
+      |                  ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IOService.h:670:15: note: overridden virtual function is here
+  670 |         virtual void handleClose(   IOService *       forClient,
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1111:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1111 |         virtual bool setProperty(const OSSymbol * aKey, OSObject * anObject);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:298:15: note: overridden virtual function is here
+  298 |         virtual bool setProperty(const OSSymbol * aKey,
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1112:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1112 |         virtual bool setProperty(const OSString * aKey, OSObject * anObject);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:309:15: note: overridden virtual function is here
+  309 |         virtual bool setProperty(const OSString * aKey, OSObject * anObject);
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1113:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1113 |         virtual bool setProperty(const char * aKey, OSObject * anObject);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:318:15: note: overridden virtual function is here
+  318 |         virtual bool setProperty(const char * aKey, OSObject * anObject);
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1114:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1114 |         virtual bool setProperty(const char * aKey, const char * aString);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:327:15: note: overridden virtual function is here
+  327 |         virtual bool setProperty(const char * aKey, const char * aString);
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1115:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1115 |         virtual bool setProperty(const char * aKey, bool aBoolean);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:336:15: note: overridden virtual function is here
+  336 |         virtual bool setProperty(const char * aKey, bool aBoolean);
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1116:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1116 |         virtual bool setProperty(const char * aKey, unsigned long long aValue, unsigned int aNumberOfBits);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:346:15: note: overridden virtual function is here
+  346 |         virtual bool setProperty( const char *       aKey,
+      |                      ^
+In file included from /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:11:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:1117:15: warning: 'setProperty' overrides a member function but is not marked 'override' [-Winconsistent-missing-override]
+ 1117 |         virtual bool setProperty(const char * aKey, void * bytes, unsigned int length);
+      |                      ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/IORegistryEntry.h:358:15: note: overridden virtual function is here
+  358 |         virtual bool setProperty( const char *       aKey,
+      |                      ^
+/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:38:32: warning: 'IOPCIDevice' is deprecated: Use PCIDriverKit [-Wdeprecated-declarations]
+   38 |     fPCIDevice = OSDynamicCast(IOPCIDevice, provider);
+      |                                ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:368:7: note: 'IOPCIDevice' has been explicitly marked deprecated here
+  368 | class __kpi_deprecated("Use PCIDriverKit") IOPCIDevice : public IOService
+      |       ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/sys/cdefs.h:238:32: note: expanded from macro '__kpi_deprecated'
+  238 | #define __kpi_deprecated(_msg) __deprecated_msg(_msg)
+      |                                ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:38:18: warning: 'IOPCIDevice' is deprecated: Use PCIDriverKit [-Wdeprecated-declarations]
+   38 |     fPCIDevice = OSDynamicCast(IOPCIDevice, provider);
+      |                  ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/libkern/c++/OSMetaClass.h:385:53: note: expanded from macro 'OSDynamicCast'
+  385 |     ((type *) OSMetaClassBase::safeMetaCast((inst), OSTypeID(type)))
+      |                                                     ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/libkern/c++/OSMetaClass.h:325:31: note: expanded from macro 'OSTypeID'
+  325 | #define OSTypeID(type)   (type::metaClass)
+      |                               ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:368:7: note: 'IOPCIDevice' has been explicitly marked deprecated here
+  368 | class __kpi_deprecated("Use PCIDriverKit") IOPCIDevice : public IOService
+      |       ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/sys/cdefs.h:238:32: note: expanded from macro '__kpi_deprecated'
+  238 | #define __kpi_deprecated(_msg) __deprecated_msg(_msg)
+      |                                ^
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:46:17: warning: 'setBusMasterEnable' is deprecated: first deprecated in macOS 12.4 [-Wdeprecated-declarations]
+   46 |     fPCIDevice->setBusMasterEnable(false);   // 探针阶段禁止 DMA
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 setBusLeadEnable
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Headers/IOKit/pci/IOPCIDevice.h:574:18: note: 'setBusMasterEnable' has been explicitly marked deprecated here
+  574 |     virtual bool setBusMasterEnable( bool enable ) API_DEPRECATED_WITH_REPLACEMENT("setBusLeadEnable", macos(10.0, 12.4), ios(1.0, 15.4), watchos(1.0, 8.5), tvos(1.0, 15.4));
+      |                  ^
+/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/src/CMP40HXAccelerator.cpp:119:78: warning: implicit conversion changes signedness: 'int' to 'IOByteCount' (aka 'unsigned long long') [-Wsign-conversion]
+  119 |         const UInt32 bar = fPCIDevice->configRead32(kIOPCIConfigBaseAddress0 + i * 4);
+      |                                        ~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+13 warnings generated.
+-- link --
+-- ad-hoc sign --
+-- verify --
+/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/build/CMP40HXAccelerator.kext/Contents/MacOS/CMP40HXAccelerator: Mach-O 64-bit kext bundle x86_64
+
+构建完成: /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/build/CMP40HXAccelerator.kext
+SHA256:
+a3f61d6b195dfc80ef7bd58e3bf7077605ab04ae35f8a0461d8a8f45f1252fb4  /Users/<user>/Desktop/CMP40HX-Metal-Skeleton/build/CMP40HXAccelerator.kext/Contents/MacOS/CMP40HXAccelerator
+build.sh exit=0
+
+--- [3] 产物校验 ---
+-rwxr-xr-x  1 <user>  staff  1602 11月 21 07:54 build/CMP40HXAccelerator.kext/Contents/Info.plist
+
+build/CMP40HXAccelerator.kext/Contents/MacOS/:
+total 104
+drwxr-xr-x  3 <user>  staff     96 11月 21 07:54 .
+drwxr-xr-x  5 <user>  staff    160 11月 21 07:54 ..
+-rwxr-xr-x  1 <user>  staff  52928 11月 21 07:54 CMP40HXAccelerator
+架构:
+Non-fat file: build/CMP40HXAccelerator.kext/Contents/MacOS/CMP40HXAccelerator is architecture: x86_64
+签名:
+Executable=/Users/<user>/Desktop/CMP40HX-Metal-Skeleton/build/CMP40HXAccelerator.kext/Contents/MacOS/CMP40HXAccelerator
+Identifier=com.cmp40hx.skeleton.accelerator
+Format=bundle with Mach-O thin (x86_64)
+CodeDirectory v=20100 size=465 flags=0x2(adhoc) hashes=9+3 location=embedded
+Signature=adhoc
+Info.plist entries=10
+SHA256:
+a3f61d6b195dfc80ef7bd58e3bf7077605ab04ae35f8a0461d8a8f45f1252fb4  build/CMP40HXAccelerator.kext/Contents/MacOS/CMP40HXAccelerator
+
+--- [4] 现有 EFI 分区 ---
+   0:      GUID_partition_scheme                        *120.0 GB   disk4
+   1:                        EFI EFI                     209.7 MB   disk4s1
+   2:                 Apple_APFS Container disk5         119.8 GB   disk4s2
+
+下一步(二选一):
+  A) 手动复制: sudo diskutil mount diskXsY && cp -R build/CMP40HXAccelerator.kext /Volumes/EFI/OC/Kexts/
+  B) 让本脚本复制: 重新运行并加参数  ./mac-01-build.command copy disk0s1
+
+===== BUILD OK =====

@@ -1,0 +1,28 @@
+===== CMP40HX SKELETON VERIFY 20261121-083638 =====
+macOS: 26.7.2 build 25G332
+
+--- [1] 类实例是否存在 ---
+exit=0
+
+--- [2] 关键属性 ---
+exit=1
+
+--- [3] PCI 节点归属(谁在驱动 1f0b) ---
+    | |   |     |   "model" = <"NVIDIA CMP 40HX">
+    | |   |     |   "IODeviceMemory" = (({"address"=4127195136,"length"=16777216}),({"address"=547876765696,"length"=67108864}),({"address"=547943874560,"length"=33554432}),"IOSubMemoryDescriptor is not serializable")
+    | |   |     |   "IOPCIL1PMCapabilities" = 2686751
+    | |   |     |   "compatible" = <"pci1043,8804","pci10de,1f0b","pciclass,030200","PEGP","GFX0">
+    | |   |     |   "IOPCIExpressDeviceCapabilities2" = 264211
+    | |   |     |   "IOPCIExpressDeviceCapabilities" = 288132577
+    | |   |     |   "reg" = <0000020000000000000000000000000000000000100002020000000000000000000000000000000114000242000000000000000000000000000000041c000242000000000000000000000000000000022400020100000000000000000000000080000000>
+exit=0
+
+--- [4] 内核日志(本次启动内骨架相关) ---
+Timestamp                       Thread     Type        Activity             PID    TTL  
+exit=0
+
+--- [5] 是否仍存在 NVRM 抢占(对照) ---
+3
+(计数仅供参考,原始证据见 [3])
+
+===== END =====

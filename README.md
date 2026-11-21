@@ -255,13 +255,65 @@
 
 项目文件:MIT([LICENSE](LICENSE))。随包分发的 kext 二进制归其上游所有,各自许可见 NOTICE。**禁止**:删除许可与来源声明后再分发。
 
+**借鉴与署名**:本项目文档、脚本与自研代码**欢迎学习、借鉴、修改、二次发布**;唯一要求是在显著位置注明来源——附上本仓库链接(`https://github.com/adragonhope97-pixel/CMP40HX-macOS-EFI`)并注明"基于 CMP 40HX EFI 项目"。不需要事先申请授权。
+
 ## 十八、免责声明
 
 本项目仅供学习研究。Hackintosh 依 Apple EULA 属灰色领域,使用风险自负;作者不对任何硬件损坏、数据丢失或违反 EULA 的后果负责。本项目与 Apple、NVIDIA、ASUS 无任何关联。
 
 ---
 
+## 十九、工具与脚本(全部可复用)
+
+本次研究实际执行过的脚本与自研驱动骨架全部收录在 [`Tools/`](Tools/README.md),每个都标注了作用、运行环境、执行步骤与回滚方式。
+
+| 文件 | 作用 | 环境 |
+|---|---|---|
+| [`Tools/CMP40HX-Metal-Skeleton/`](Tools/CMP40HX-Metal-Skeleton/) | 自研 IOKit 探针 kext(绕开 NVIDIA RM,读 PMC 寄存器判定 GPU 是否响应) | macOS 编译 / OpenCore 加载 |
+| [`Tools/mac-01-build.command`](Tools/mac-01-build.command) | 工具链检查 → 编译 → 产物校验(含 `__kmod_info` 断言) | macOS |
+| [`Tools/mac-02-install-kext.command`](Tools/mac-02-install-kext.command) | 复制 kext 到 ESP,自动探测卷 + SHA256 校验 | macOS |
+| [`Tools/mac-99-do-everything.command`](Tools/mac-99-do-everything.command) | 一键全流程:编译 → 复制 → 备份 config → 加条目 → 校验 → 双 ESP 同步 | macOS |
+| [`Tools/mac-99-revert.command`](Tools/mac-99-revert.command) | 一键回滚(恢复 config 备份 + 删除 kext) | macOS |
+| [`Tools/efi-switch.sh`](Tools/efi-switch.sh) | OpenCore 配置方案切换(status/switch/rollback/backup-efi/validate) | Windows Git Bash |
+
+**典型执行顺序**:
+
+```bash
+# macOS 端
+bash mac-99-do-everything.command     # 编译 + 部署 + 校验(含备份)
+# 重启后
+bash ~/Desktop/CMP40HX-Metal-Skeleton/tests/verify-skeleton.sh
+# 需要撤销时
+bash mac-99-revert.command
+```
+
+详细的逐步操作见 [`Tools/CMP40HX-Metal-Skeleton/docs/MAC-OPERATIONS.md`](Tools/CMP40HX-Metal-Skeleton/docs/MAC-OPERATIONS.md)。
+
+## 二十、实验日志(原始记录,已脱敏)
+
+`Logs/` 下保留了本次研究的原始执行日志,仅移除用户名、卷标与本地路径,其余内容未做任何修改,便于复现与对照。
+
+| 日志 | 内容 |
+|---|---|
+| [`Logs/2026-11-21-build.log`](Logs/2026-11-21-build.log) | macOS 26.7.2 + clang 21 编译探针 kext 的完整输出(含全部警告) |
+| [`Logs/2026-11-21-deploy.log`](Logs/2026-11-21-deploy.log) | 一键部署全流程:编译 → `__kmod_info` 断言 → 复制 → 备份 → 写条目 → 双 ESP 同步 → 差异核对 |
+| [`Logs/2026-11-21-verify.log`](Logs/2026-11-21-verify.log) | 重启后的取证输出(此份为"kext 未加载"的失败样本,可用于对照) |
+
+配套分析文档:
+
+- [`Docs/research/11-RM-GATE-CORRECTION.md`](Docs/research/11-RM-GATE-CORRECTION.md) — RM 门禁结论纠错(0xF = GPU_IS_LOST)
+- [`Docs/research/12-PROBE-LOAD-10-PLANS.md`](Docs/research/12-PROBE-LOAD-10-PLANS.md) — 探针不加载的 10 方案裁决(10→5→2→1)
+- [`Docs/research/13-PREBOOT-AUDIT.md`](Docs/research/13-PREBOOT-AUDIT.md) — 启动前风险审计(两轮,含 7 个必然失败级缺陷)
+
+---
+
 ## English
+
+### Tools, scripts and experiment logs
+
+Every script executed during this research, plus the from-scratch IOKit probe kext, lives in [`Tools/`](Tools/README.md) — each with its purpose, environment, exact steps and rollback path. Raw (sanitized) execution logs are in [`Logs/`](Logs/), and the analysis documents in [`Docs/research/`](Docs/research/) (notably 11: RM gate correction, 12: 10-plan adjudication, 13: pre-boot audit).
+
+You are welcome to learn from, reuse and improve any of it; if you republish or build on it, please credit this repository and note "based on the CMP 40HX EFI project".
 
 ### Introduction
 
