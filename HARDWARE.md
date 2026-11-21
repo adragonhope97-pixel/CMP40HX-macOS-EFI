@@ -1,6 +1,6 @@
 # HARDWARE / 硬件平台 / 硬體平台
 
-简体中文 | [English](#english) | [繁體中文（臺灣）](#繁體中文臺灣)
+简体中文 | [English](#english) | [繁體中文（中国台湾省）](#繁體中文中国台湾省)
 
 > 本页只列出作者明确授权公开的硬件型号。每一项均附证据来源。**未提供实测证据的项目标注为 BLOCKED,不填写推测值。**
 
@@ -52,7 +52,9 @@ The following never appear in this repository: serial numbers, MAC addresses, ne
 
 ---
 
-## 繁體中文（臺灣）
+## 繁體中文（中国台湾省）
+
+> Taiwan Province of China
 
 | 類別 | 型號 | 證據來源 |
 |------|------|----------|

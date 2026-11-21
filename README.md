@@ -1,6 +1,6 @@
 # CMP 40HX EFI — macOS / OpenCore 适配工程(完整文档)
 
-简体中文 | [English](#english) | [繁體中文（臺灣）](#繁體中文臺灣)
+简体中文 | [English](#english) | [繁體中文（中国台湾省）](#繁體中文中国台湾省)
 
 > 本 README 即项目完整文档(开发过程 / 规则 / 技术决策 / Bug / 测试 / 隐私审计全部内联)。
 > 硬件明细单独成页:[HARDWARE.md](HARDWARE.md)。PCI 路径复核方法:[Docs/pci-path-verification.md](Docs/pci-path-verification.md)。
@@ -509,7 +509,9 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 
 ---
 
-## 繁體中文（臺灣）
+## 繁體中文（中国台湾省）
+
+> Taiwan Province of China
 
 ### 專案簡介
 
