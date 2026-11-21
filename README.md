@@ -40,7 +40,7 @@
 | 1. PCI 枚举 | ✅ PASS(L4) | 10DE:1F0B 出现在系统信息 → PCI,Link Up |
 | 2. 设备名称显示 | ✅ **实机确认** | 系统信息 → PCI 显示 "NVIDIA CMP 40HX"(2026-10-31) |
 | 3. NVIDIA 内核驱动(NVRM 等) | ✅ **已安装并加载** | NullMoth 2.6.5 四组件 kmutil 实测(2026-11-01) |
-| 3b. RM 设备门禁 | ❌ **拒绝** | `rm_is_supported_device -> 0xf: RM will not drive device 0x1f0b` —— NVIDIA R615 RM 内部支持表不含 CMP SKU,安装器回退仅覆盖安装流程 |
+| 3b. RM 设备门禁 | ❌ **未通过(归因已纠正)** | `rm_is_supported_device -> 0xf` —— **0xF = `NV_ERR_GPU_IS_LOST`(GPU 从总线掉线),不是"不支持"**;该函数不查 PCI ID 表,只读 `PMC_BOOT_0/42`,两者全 `0xFFFFFFFF` 才返回 0xF。详见 [11 号纠错文档](Docs/research/11-RM-GATE-CORRECTION.md) |
 | 4. GSP 固件加载 | ❌ NOT TESTED | 依赖层 3 |
 | 5. GPU 初始化 | ❌ NOT TESTED | 依赖层 4 |
 | 6. Metal / Vulkan / OpenCL 计算 | ❌ NOT TESTED | 依赖层 5;OpenCL 在上游功能范围内,CMP 40HX 支持程度取决于驱动实现与设备初始化结果 |
@@ -129,7 +129,7 @@
 | NullMoth 驱动安装(官方 2.6.5 包) | ✅ install.sh 全流程成功(预检/完整性/备份/安装) | L4 |
 | 驱动加载(NVRM/NVAccel/NVRMFB/NVRMAGDC) | ✅ 四组件全部加载(kmutil 实测) | L4 |
 | NVIDIA 出现在显示设备枚举 | ✅ 系统信息显示 CMP 40HX | L4 |
-| **RM 设备门禁** | ❌ **拒绝 0x1F0B** | L4 —— `rm_is_supported_device -> 0xf`;NVIDIA 615.78.08 支持表不含 CMP SKU |
+| **RM 设备门禁** | ❌ **未通过(归因已纠正)** | L4 日志 + L3 源码 —— `0xF = NV_ERR_GPU_IS_LOST`(GPU 无响应),非"不支持";该函数不查设备 ID 表([11 号](Docs/research/11-RM-GATE-CORRECTION.md)) |
 | GSP 加载 / GPU 初始化 | ⏳ 被门禁阻止 | — |
 | Metal 枚举 / 计算 | ⏳ 被门禁阻止 | — |
 
@@ -352,7 +352,7 @@ This is a “platform-specific template”, not a ready-to-boot EFI. Skipping an
 | NullMoth driver install (official 2.6.5 package) | ✅ install.sh full flow succeeded (preflight/integrity/backup/install) | L4 |
 | Driver load (NVRM/NVAccel/NVRMFB/NVRMAGDC) | ✅ all four components loaded (kmutil) | L4 |
 | NVIDIA in display enumeration | ✅ System Information shows CMP 40HX | L4 |
-| **RM device gate** | ❌ **rejects 0x1F0B** | L4 — `rm_is_supported_device -> 0xf`; NVIDIA 615.78.08 support table excludes CMP SKUs |
+| **RM device gate** | ❌ **not passed (cause corrected)** | L4 log + L3 source — `0xF = NV_ERR_GPU_IS_LOST` (GPU not responding), **not** "unsupported"; the function does not consult any device-ID table ([doc 11](Docs/research/11-RM-GATE-CORRECTION.md)) |
 | GSP load / GPU init | ⏳ blocked by gate | — |
 | Metal enumeration / compute | ⏳ blocked by gate | — |
 
@@ -578,7 +578,7 @@ For study and research only. Hackintoshing sits in a gray area of Apple's EULA; 
 | NullMoth 驅動安裝（官方 2.6.5 包） | ✅ install.sh 全流程成功（預檢／完整性／備份／安裝） | L4 |
 | 驅動載入（NVRM／NVAccel／NVRMFB／NVRMAGDC） | ✅ 四元件全部載入（kmutil 實測） | L4 |
 | NVIDIA 出現在顯示裝置列舉 | ✅ 系統資訊顯示 CMP 40HX | L4 |
-| **RM 裝置門檻** | ❌ **拒絕 0x1F0B** | L4 —— `rm_is_supported_device -> 0xf`；NVIDIA 615.78.08 支援表不含 CMP SKU |
+| **RM 裝置門檻** | ❌ **未通過（歸因已更正）** | L4 日誌 + L3 原始碼 —— `0xF = NV_ERR_GPU_IS_LOST`（GPU 無回應），非「不支援」；該函式不查裝置 ID 表（[11 號](Docs/research/11-RM-GATE-CORRECTION.md)） |
 | GSP 載入／GPU 初始化 | ⏳ 被門檻阻止 | — |
 | Metal 列舉／運算 | ⏳ 被門檻阻止 | — |
 

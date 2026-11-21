@@ -9,6 +9,15 @@
 > Driver: NullMoth 2.6.5 official package (SHA-256 verified against upstream)
 > Install method: install.sh from extracted tar.gz (not 1401 app)
 
+> **Correction (2026-11-21, L3 source evidence)**
+> Reading `0xf` as "device not supported" was wrong. Per NVIDIA's `nvstatuscodes.h`,
+> `0xF = NV_ERR_GPU_IS_LOST` ("GPU lost from the bus"); `NV_ERR_NOT_SUPPORTED` is `0x56`.
+> `rm_is_supported_device` (`osapi.c`) contains **no device-ID table** — it reads
+> `PMC_BOOT_0/42` and returns `GPU_IS_LOST` when both read `0xFFFFFFFF`. HAL selection is by
+> silicon architecture (`PMC_BOOT_42`); TU106 = arch `0x16` / impl `6`.
+> See `Docs/research/11-RM-GATE-CORRECTION.md`. The sections below are kept as the
+> historical record of the 2026-11-01 run.
+
 ---
 
 ## 1. What worked
@@ -184,8 +193,10 @@ After the attempted init:
 
 ## 8. What would be needed to proceed
 
-The RM gate (rm_is_supported_device) rejects the device because the
-R615 615.78.08 supported-device table does not include CMP SKUs.
+~~The RM gate (rm_is_supported_device) rejects the device because the
+R615 615.78.08 supported-device table does not include CMP SKUs.~~
+**Corrected 2026-11-21:** there is no such table in the gate. `0xF` is
+`NV_ERR_GPU_IS_LOST`; the card did not respond to register reads at that moment.
 Possible paths:
 
 1. Ask upstream (NullMoth) to add 0x1F0B to the supported table —
